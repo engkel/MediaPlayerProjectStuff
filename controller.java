@@ -120,9 +120,7 @@ public void ListViewPlayList(Stage primaryStage) throws Exception {
 
     @FXML public void HandleRemoveSongFromPlaylist() {   //naming scheme, consistency?
         RemoveSongFromPlaylist();
-        System.out.println("Song removed from playlist");
     }
-
 
     @FXML
     TextField PlaylistName = new TextField();
@@ -134,46 +132,55 @@ public void ListViewPlayList(Stage primaryStage) throws Exception {
         else {
         System.out.println("playlist named "+playlistName+" created.");
         DB.selectSQL("INSERT INTO tbl_Playlists (fld_Name) VALUES ('"+playlistName+"');");
-        // The entry is made in the tbl but I still get console: Error in the sql parameter, please test this in SQLServer first
-        //The statement did not return a result set.
+        // The entry is made succesfully in the table in the DB but I still get an error in console:
+        // "Error in the sql parameter, please test this in SQLServer first
+        //The statement did not return a result set."
         }
     }
 
     public void DeletePlaylist(){
-        int PlaylistIdSelectedForDeletion = ListViewPlayListNames.getSelectionModel().getSelectedItem();//getSelectedItem or getSelectedIndex?
+        //The selected in the Listview saved in a variable
+        int PlaylistIdSelectedForDeletion = ListViewPlayListNames.getSelectionModel().getSelectedIndex();//getSelectedItem or getSelectedIndex?
+        //that value is then used for an sql query to delete the correct playlist and playlist contents.
         DB.selectSQL("DELETE FROM tbl_Playlists WHERE fld_playlistId='"+PlaylistIdSelectedForDeletion+"'");
         DB.selectSQL("DELETE FROM tbl_PlaylistContents WHERE fld_PlaylistId='"+PlaylistIdSelectedForDeletion+"'");
         System.out.println("Playlist has been deleted");
     }
 
-    //listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue extends String> ov, String old_val, String new_val) ->
+    //Do we need this one somewhere: listView.getSelectionModel().selectedItemProperty().addListener((ObservableValue extends String> ov, String old_val, String new_val) ->
+
     public void AddSongToPlaylist() {
+        //get the selected playlist in ListViewPlayListNames to know which playlist the song is supposed to be added to.
         int selectedPlaylist = ListViewPlayListNames.getSelectionModel().getSelectedIndex(); //or getselectedItem?
-        String selectedPlaylistConverted=String.valueOf(selectedPlaylist);
 
-        String playlistCounterBeforeConversion = DB.selectSQL("SELECT count(fld_SongPosition) FROM tbl_PlaylistContents WHERE fld_PlaylistId='"+selectedPlaylistConverted+"'");
-        playlistCounterAfterConversion=Integer.parseInt(playlistCounterBeforeConversion);
+        //count all rows in PlaylistContents with the selected playlistId to get the correct songPosition for the new song.
+        DB.selectSQL("SELECT COUNT(fld_SongPosition) FROM tbl_PlaylistContents WHERE fld_PlaylistId='"+selectedPlaylist+"'");
+        String countedSongs = DB.getData();
+        int countedSongsConverted = Integer.parseInt(countedSongs);
+        int songPosition=countedSongsConverted+1;
 
-        DB.selectSQL("INSERT INTO tbl_Employee(fldEmployeeID, fldName) VALUES(253, 'Lise Hansen'))");
+        //get the selected song in the library listview and insert the new song in playlistContents.
         int selectedSong = ListViewAllSongs.getSelectionModel().getSelectedIndex(); //or getselectedItem?
-        String selectedSongConverted=String.valueOf(selectedSong);
+        DB.selectSQL("INSERT INTO tbl_PlaylistContents (fld_PlaylistId, fld_SongId, fld_SongPosition) VALUES ('"+selectedPlaylist+"', '"+selectedSong+"', '"+songPosition+"");
 
-        DB.selectSQL("INSERT INTO tbl_PlaylistContents (fld_PlaylistId, fld_SongId, fld_SongPosition) ('"+selectedPlaylistConverted+"', '"+selectedSongConverted+"', '"+songPosition)
-                "SELECT column1, column2 FROM Table1 WHERE fld_SongId='"+selectedSongConverted+"'");
+        //add the number of songs to fld_NumberOfSongs in tbl_Playlists where fld_PlaylistId=x - is this necessary anymore?
+        DB.selectSQL("UPDATE tbl_Playlists SET fld_NumberOfSongs = "+songPosition+"WHERE fld_PlaylistId="+selectedPlaylist+"");
+
         System.out.println("Song added to playlist");
     }
 
     public void RemoveSongFromPlaylist(){
+        //get the selected song in the library listview and insert the new song in playlistContents.
+        int selectedPlaylist = ListViewPlayList.getSelectionModel().getSelectedIndex();
+        int selectedSong = ListViewPlayListNames.getSelectionModel().getSelectedIndex(); //or getselectedItem?
+        DB.selectSQL("DELETE * FROM tbl_PlaylistContents WHERE fld_PlaylistId='"+selectedPlaylist+"' AND fld_SongPosition='"+selectedSong+"'");
 
-        //AddToPlaylist button connected to handle
-        //AddToPlaylist()
-        //den valgte sang i ListView - send songID - som så kan bruges i...
-        //sql, som tilføjer row med sang til den valgte playlist tbl_ (dvs. vi skal også have valgte playlist i Listview registreret
-        //DB.selectSQL    delete FROM tbl_playlistContents WHERE fld_SongPosition='*' AND );
-        //INSERT INTO tbl_Playlists (fld_Name)
-        //VALUES ('det som jeg skrev i ');
-        // DELETE FROM tbl_Playlist WHERE condition;
-        //counterpådenplaylist--;   (jeg sql count er godt nok)
+        //update number of songs in selected playlist - maybe not necessary anymore.
+        DB.selectSQL("SELECT COUNT(fld_SongPosition) FROM tbl_PlaylistContents WHERE fld_PlaylistId='"+selectedPlaylist+"'");
+        String countedSongs = DB.getData();
+        DB.selectSQL("UPDATE tbl_Playlists SET fld_NumberOfSongs = "+countedSongs+"WHERE fld_PlaylistId="+selectedPlaylist+"");
+
+        System.out.println("Song removed from playlist");
     }
 
 
@@ -198,8 +205,6 @@ public void ListViewPlayList(Stage primaryStage) throws Exception {
              
 
         }
-
-
 
     }
 
