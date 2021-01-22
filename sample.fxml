@@ -15,10 +15,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="864.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <BorderPane layoutX="34.0" layoutY="58.0" prefHeight="573.0" prefWidth="786.0" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -36,7 +37,7 @@
                      <children>
                         <Button fx:id="AddSongToPlaylistButton" mnemonicParsing="false" onAction="#HandleAddSongToPlaylist" prefHeight="28.0" prefWidth="158.0" text="Add Song to Playlist" />
                         <Button fx:id="RemoveSongFromPlaylistButton" mnemonicParsing="false" onAction="#HandleRemoveSongFromPlaylist" prefHeight="29.0" prefWidth="173.0" text="Remove Song" />
-                        <Separator prefHeight="6.0" prefWidth="158.0" />
+                        <Separator prefHeight="21.0" prefWidth="158.0" />
                         <Button fx:id="NewPlaylistButton" mnemonicParsing="false" onAction="#HandleNewPlaylist" prefHeight="30.0" prefWidth="177.0" text="New Playlist" />
                         <Button fx:id="DeletePlaylistButton" mnemonicParsing="false" onAction="#HandleDeletePlaylist" onDragDetected="#HandleDeletePlaylist" prefHeight="31.0" prefWidth="158.0" text="Delete Playlist" />
                      </children>
@@ -56,8 +57,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ListView fx:id="ListViewAllSongs" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
-                        <ListView fx:id="ListViewPlayList" prefHeight="330.0" prefWidth="293.0" />
+                        <ListView fx:id="ListViewAllSongs" prefHeight="350.0" prefWidth="563.0" GridPane.columnIndex="1" />
+                        <ListView fx:id="ListViewPlayList" prefHeight="350.0" prefWidth="478.0" />
                      </children>
                   </GridPane>
                   <Slider />
@@ -71,7 +72,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Now Playing" textAlignment="CENTER">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -86,6 +87,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
+                        <MediaView fx:id="mediaView" fitHeight="25.0" fitWidth="350.0" />
                      </children>
                   </GridPane>
                   <GridPane prefHeight="54.0" prefWidth="864.0" style="-fx-background-color: grey;">
@@ -177,13 +179,13 @@
                         </Text>
                      </children>
                   </VBox>
-                  <VBox prefHeight="100.0" prefWidth="583.0">
+                  <VBox maxWidth="548.0" prefHeight="102.0" prefWidth="519.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <HBox prefHeight="86.0" prefWidth="583.0">
+                              <HBox prefHeight="76.0" prefWidth="507.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Media Player" textAlignment="CENTER" wrappingWidth="577.8096923828125">
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Media Player" textAlignment="CENTER" wrappingWidth="518.6097412109375">
                                        <font>
                                           <Font size="50.0" />
                                        </font>
@@ -192,12 +194,7 @@
                               </HBox>
                               <HBox prefHeight="30.0" prefWidth="583.0">
                                  <children>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Songs in Selected Playlist" textAlignment="CENTER" wrappingWidth="327.6071319580078">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </Text>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Library" textAlignment="CENTER" wrappingWidth="252.6652739524834">
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Songs in Selected Playlist" textAlignment="CENTER" wrappingWidth="494.80714416503906">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -208,11 +205,34 @@
                         </VBox>
                      </children>
                   </VBox>
-                  <VBox prefHeight="100.0" prefWidth="126.0">
+                  <VBox prefHeight="102.0" prefWidth="314.0">
                      <children>
-                        <TextField fx:id="InputSearch" promptText="Search here" />
-                        <Button fx:id="Search" mnemonicParsing="false" onAction="#HandleSearch" prefHeight="42.0" prefWidth="126.0" text="Search" />
-                        <Button fx:id="ChooseFile" mnemonicParsing="false" onAction="#HandleChooseFile" prefHeight="34.0" prefWidth="126.0" text="Choose file" />
+                        <HBox prefHeight="102.0" prefWidth="80.0">
+                           <children>
+                              <VBox prefHeight="102.0" prefWidth="121.0">
+                                 <children>
+                                    <TextField fx:id="InputSearch" promptText="Search here" />
+                                    <Button fx:id="Search" mnemonicParsing="false" onAction="#HandleSearch" prefHeight="26.0" prefWidth="173.0" text="Search" />
+                                    <Button fx:id="PlayTheChosenButton" mnemonicParsing="false" onAction="#HandlePlayTheChosen" prefHeight="26.0" prefWidth="158.0" text="Play the chosen file" />
+                                    <Button fx:id="ChooseFile" mnemonicParsing="false" onAction="#HandleChooseFile" prefHeight="26.0" prefWidth="209.0" text="Choose file" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="102.0" prefWidth="145.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="140.0" />
+                                       </children>
+                                    </VBox>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Library" textAlignment="CENTER" wrappingWidth="141.20724487304688">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>
